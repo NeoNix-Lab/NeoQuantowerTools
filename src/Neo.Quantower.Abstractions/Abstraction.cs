@@ -1,6 +1,6 @@
 ﻿namespace Neo.Quantower.Abstractions
 {
-    public class Class1
+    public class Abstraction
     {
 
     }
