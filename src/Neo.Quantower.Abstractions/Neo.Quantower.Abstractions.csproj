@@ -2,8 +2,25 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
+
+    <PackageId>Neo.QuantowerToolkit.Abstractions</PackageId>
+    <Version>0.0.1</Version>
+    <Authors>Neo</Authors>
+    <Company>Neo.ToolKit</Company>
+    <Description>Shared interfaces and runtime-injection factory for Quantower-based toolkits.</Description>
+    <PackageTags>Quantower;Trading;Toolkit;Abstractions</PackageTags>
+    <RepositoryUrl>https://github.com/Nico88-Vs/NeoQuantowerTools.git</RepositoryUrl>
+
+    <RootNamespace>Neo.Quantower.Abstractions</RootNamespace>
+    <AssemblyName>Neo.Quantower.Abstractions</AssemblyName>
+    <OutputType>Library</OutputType>
+    <LangVersion>latest</LangVersion>
+    <Version>0.0.1</Version>
+
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
 </Project>

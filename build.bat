@@ -1,24 +1,33 @@
-@echo off
-echo.
-echo *** Building and packing Neo.Quantower.Toolkit (net8) ***
-echo.
+﻿@echo off
+setlocal
 
-:: 1. Build solution or project
-dotnet build -c Release
 
-:: 2. Check if DLL exists
-if exist bin\Release\net8.0\Neo.Quantower.Toolkit.dll (
-    echo.
-    echo Packing NuGet package...
+:: === CONFIG ===
+set SOLUTION_NAME=NeoQuantowerTools.sln
+set BUILD_CONFIG=Release
+set DOTNET=dotnet
 
-    :: 3. Create the .nupkg using dotnet pack instead of nuget pack
-    dotnet pack -c Release
+:: === BUILD ===
+echo Building all projects in solution: %SOLUTION_NAME%
+%DOTNET% build %SOLUTION_NAME% -c %BUILD_CONFIG%
+pause
+if %errorlevel% neq 0 (
+    echo Build failed.
+    pause
+    exit /b %errorlevel%
+)
+echo Build complete.
 
-    echo.
-    echo *** Package .nupkg successfully created! ***
-) else (
-    echo.
-    echo ERROR: net8.0 DLL not found! Build failed or wrong path.
+:: === PACK ===
+echo Packing NuGet for Abstractions...
+%DOTNET% pack src\Neo.Quantower.Abstractions\Neo.Quantower.Abstractions.csproj -c %BUILD_CONFIG% --no-build
+if %errorlevel% neq 0 (
+    echo ❌ NuGet pack failed.
+    pause
+    exit /b %errorlevel%
 )
 
+echo NuGet package created.
+
+echo All done.
 pause

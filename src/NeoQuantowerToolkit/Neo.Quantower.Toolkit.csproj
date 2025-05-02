@@ -7,10 +7,14 @@
     <AssemblyName>Neo.Quantower.Toolkit</AssemblyName>
     <OutputType>Library</OutputType>
     <LangVersion>latest</LangVersion>
-    <Version>0.0.2</Version>
+    <Version>0.0.3</Version>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="System.Drawing.Common" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Neo.Quantower.Abstractions\Neo.Quantower.Abstractions.csproj" />
   </ItemGroup>
 </Project>
