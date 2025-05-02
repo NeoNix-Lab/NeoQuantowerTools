@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Neo.Quantower.Toolkit", "src\NeoQuantowerToolkit\Neo.Quantower.Toolkit.csproj", "{032540EC-B800-45EF-97B9-C3BF72D72EFE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Neo.Quantower.Abstractions", "src\Neo.Quantower.Abstractions\Neo.Quantower.Abstractions.csproj", "{F61A6721-688D-4E50-9106-2F7BECB41020}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{39DC21DD-A956-45B7-A979-B7F4F30D13BF}"
+	ProjectSection(SolutionItems) = preProject
+		Future Implementations for Neo.Quantower.Toolkit.md = Future Implementations for Neo.Quantower.Toolkit.md
+		LICENSE.txt = LICENSE.txt
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4D181022-25B9-4905-8B0B-754A56571C54}"
+	ProjectSection(SolutionItems) = preProject
+		build.bat = build.bat
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{032540EC-B800-45EF-97B9-C3BF72D72EFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{032540EC-B800-45EF-97B9-C3BF72D72EFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{032540EC-B800-45EF-97B9-C3BF72D72EFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{032540EC-B800-45EF-97B9-C3BF72D72EFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F61A6721-688D-4E50-9106-2F7BECB41020}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F61A6721-688D-4E50-9106-2F7BECB41020}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F61A6721-688D-4E50-9106-2F7BECB41020}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F61A6721-688D-4E50-9106-2F7BECB41020}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8E5426E0-E87B-4794-B0C1-520BB72DEE18}
+	EndGlobalSection
+EndGlobal

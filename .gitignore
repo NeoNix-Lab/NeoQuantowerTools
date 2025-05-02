@@ -1,0 +1,37 @@
+# ------------------------------
+# NuGet & Build output
+bin/
+obj/
+*.nupkg
+*.snupkg
+*.nuspec
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.vcxproj.user
+*.csproj.user
+
+# Test Results
+TestResults/
+*.log
+*.coverage
+*.coveragexml
+
+# File temporanei / di sistema
+*.tmp
+*.bak
+*.cache
+*.db
+*.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# IDE tools (JetBrains Rider, etc.)
+.idea/
+*.sln.docstates
+
+# Local build config (opzionale)
+*.launch.json
+*.tasks.json
