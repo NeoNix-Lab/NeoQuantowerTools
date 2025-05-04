@@ -13,14 +13,18 @@ using Neo.Quantower.Abstractions.Interfaces;
 
 namespace Neo.Quantower.Toolkit.PipeDispatcher
 {
-	internal class PipeServer : IDisposable
+	internal class PipeServer : IDisposable, IPipeClient
 	{
+		private const bool _IsServer = true;
+
 		private readonly string _pipeName;
 		private NamedPipeServerStream _serverStream;
 		private bool _disposed;
 		public ICustomLogger<PipeDispatcherLoggingLevels> Logger { get; private set; }
+		public bool IsServer => _IsServer;
 		public bool IsConnected => _serverStream != null && _serverStream.IsConnected;
 		public string PipeName => _pipeName;
+		public Guid Id { get; } = new();
 
 		public PipeServer(string pipeName, ICustomLogger<PipeDispatcherLoggingLevels> logger)
 		{
@@ -58,7 +62,7 @@ namespace Neo.Quantower.Toolkit.PipeDispatcher
 				if (bytesRead > 0)
 				{
 					string json = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-					await PipeDispatcher.Instance.DispatchEnvelopeAsync(json);
+					PipeDispatcher.Instance.DispatchEnvelope(json);
 					Logger?.Log(PipeDispatcherLoggingLevels.Success, $"Server Read");
 				}
 			}

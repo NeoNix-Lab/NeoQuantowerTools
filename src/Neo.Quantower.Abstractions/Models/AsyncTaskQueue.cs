@@ -134,7 +134,7 @@ namespace Neo.Quantower.Abstractions.Models
         {
             _cts.Cancel();
             _signal.Set();
-            try { _worker.Wait(5000); } catch { /* swallow timeout to avoid deadlocks */ }
+            try { _worker.Wait(5000); } catch(Exception ex) { _logger?.Log(TaskResoult.Failed, ex.Message); }
             _cts.Dispose();
             _signal.Dispose();
         }

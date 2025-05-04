@@ -4,7 +4,7 @@ namespace Neo.Quantower.Abstractions.Examples.AsyncQueque
 {
     public static class ExampleAsyncTaskQueueUsage
     {
-        public static async Task Run()
+        public static void Run()
         {
             var queue = new AsyncTaskQueue()
             {

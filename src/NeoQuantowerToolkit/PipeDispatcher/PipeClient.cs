@@ -11,18 +11,23 @@ using Neo.Quantower.Abstractions.Interfaces;
 
 namespace Neo.Quantower.Toolkit.PipeDispatcher
 {
-    internal class PipeClient : IDisposable
+    internal class PipeClient : IDisposable, IPipeClient
     {
-        private  readonly string _pipeName;
+        private const bool _IsServer = false;
+
+        private readonly string _pipeName;
         private NamedPipeClientStream _clientStream;
         private bool _disposed;
         public ICustomLogger<PipeDispatcherLoggingLevels> Logger { get; private set; }
         public bool IsConnected => _clientStream != null && _clientStream.IsConnected;
+        public bool IsServer => _IsServer;
         public string PipeName => _pipeName;
+        public Guid Id { get; } = new();
+
 
 
         public PipeClient(string pipeName, ICustomLogger<PipeDispatcherLoggingLevels> logger)
-    {
+        {
             _pipeName = pipeName;
             Logger = logger;
         }
@@ -55,7 +60,7 @@ namespace Neo.Quantower.Toolkit.PipeDispatcher
                 if (bytesRead > 0)
                 {
                     string json = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-                    await PipeDispatcher.Instance.DispatchEnvelopeAsync(json);
+                    PipeDispatcher.Instance.DispatchEnvelope(json);
                     Logger?.Log(PipeDispatcherLoggingLevels.Success, $"Client Read");
                 }
             }
@@ -70,7 +75,7 @@ namespace Neo.Quantower.Toolkit.PipeDispatcher
                 _clientStream?.Dispose();
                 Logger?.Log(PipeDispatcherLoggingLevels.System, $"Client Disposed");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Logger?.Log(PipeDispatcherLoggingLevels.Error, $"Client Dispose Error {ex.Message}");
             }

@@ -14,12 +14,20 @@ namespace Neo.Quantower.Abstractions.Factories
     /// </summary>
     public static class PipeFactory
     {
+        /// <summary>
+        /// Nome dell'assembly di destinazione e nome del tipo del dispatcher.
+        /// </summary>
         const string targetAssemblyName = "Neo.Quantower.Toolkit";
+        /// <summary>
+        /// Nome del tipo del dispatcher.
+        /// </summary>
         const string dispatcherTypeName = "Neo.Quantower.Toolkit.PipeDispatcher";
 
         private static IPipeDispatcher? _dispatcher;
         private static bool _initialized = false;
-
+        /// <summary>
+        /// Rtepresents the status of the PipeDispatcher initialization.
+        /// </summary>
         public static bool IsInitialized => _initialized;
         public static PipeDispatcherStatus Status;
         private static ICustomLogger<PipeDispatcherLoggingLevels>? Logger { get; set; }
@@ -27,6 +35,7 @@ namespace Neo.Quantower.Abstractions.Factories
 
         /// <summary>
         /// Ottiene l'istanza registrata di IPipeDispatcher, inizializzandola se necessario.
+        /// Entry point per l'inizializzazione del dispatcher.
         /// </summary>
         public static IPipeDispatcher? Dispatcher
         {

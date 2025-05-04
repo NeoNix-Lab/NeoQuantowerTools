@@ -22,7 +22,7 @@ namespace Neo.Quantower.Toolkit.Examples.PiperDispatchExample
                 await Task.CompletedTask;
             }, tag: Tag);
 
-            await PipeDispatcher.PipeDispatcher.Instance.PublishAsync(new MyMessage
+            PipeDispatcher.PipeDispatcher.Instance.Publish(new MyMessage
             {
                 Text = "Hello from publisher!"
             });

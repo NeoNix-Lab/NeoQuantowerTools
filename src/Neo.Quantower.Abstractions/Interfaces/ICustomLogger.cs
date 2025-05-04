@@ -10,7 +10,6 @@ namespace Neo.Quantower.Abstractions.Interfaces
 {
     public interface ICustomLogger<T> : INullable where T : Enum
     {
-        T LoggingLevels { get; }
         /// <summary>
         /// Logs a message with the specified log level.
         /// </summary>
