@@ -1,18 +1,13 @@
-﻿using Neo.Quantower.Abstractions;
+﻿using Neo.Quantower.Abstractions.Interfaces;
+using Neo.Quantower.Abstractions.Models;
 using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace NeoQuantowerToolkit.Abstractions
+namespace Neo.Quantower.Abstractions.Factories
 {
-    public enum PipeDispatcherStatus
-    {
-        Requested,
-        Finded,
-        Lost,
-        Error
-    }
+
     /// <summary>
     /// Factory centralizzata per la gestione dell'istanza singleton di IPipeDispatcher.
     /// Fornisce inizializzazione lazy e registrazione dinamica tramite runtime reflection.
@@ -20,14 +15,14 @@ namespace NeoQuantowerToolkit.Abstractions
     public static class PipeFactory
     {
         const string targetAssemblyName = "Neo.Quantower.Toolkit";
-        const string dispatcherTypeName = "Neo.Quantower.Toolkit.PipeDispatcher"; 
+        const string dispatcherTypeName = "Neo.Quantower.Toolkit.PipeDispatcher";
 
         private static IPipeDispatcher? _dispatcher;
         private static bool _initialized = false;
 
         public static bool IsInitialized => _initialized;
-        public static PipeDispatcherStatus Status ;
-        private static Action<string> Logger { get; set; }
+        public static PipeDispatcherStatus Status;
+        private static ICustomLogger<PipeDispatcherLoggingLevels>? Logger { get; set; }
 
 
         /// <summary>
@@ -72,7 +67,7 @@ namespace NeoQuantowerToolkit.Abstractions
 
                 if (instanceProp == null)
                 {
-                    Logger?.Invoke("PipeDispatcher.Instance not found");
+                    Logger?.Log(PipeDispatcherLoggingLevels.Error, "PipeDispatcher.Instance not found");
                 }
                 else
                 {
@@ -81,7 +76,7 @@ namespace NeoQuantowerToolkit.Abstractions
                     {
                         Status = PipeDispatcherStatus.Finded;
                         RegisterDispatcher(instance);
-                        Logger?.Invoke("Dispatcher registered successfully.");
+                        Logger?.Log(PipeDispatcherLoggingLevels.System, "Dispatcher registered successfully.");
                     }
                     else
                         Status = PipeDispatcherStatus.Lost;
@@ -90,7 +85,7 @@ namespace NeoQuantowerToolkit.Abstractions
             catch (Exception ex)
             {
                 Status = PipeDispatcherStatus.Lost;
-                Logger?.Invoke($"[PipeFactory] Initialization failed: {ex.Message}");
+                Logger?.Log(PipeDispatcherLoggingLevels.Error, $"[PipeFactory] Initialization failed: {ex.Message}");
             }
 
         }

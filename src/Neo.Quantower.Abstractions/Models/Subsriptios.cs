@@ -17,6 +17,7 @@ namespace Neo.Quantower.Abstractions.Models
 
         public Subscription(Action unsubscribe, Guid guid)
         {
+            _guid = guid;
             _unsubscribe = unsubscribe;
         }
 

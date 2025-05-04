@@ -1,13 +1,14 @@
 ﻿using Neo.Quantower.Abstractions.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Neo.Quantower.Abstractions
+namespace Neo.Quantower.Abstractions.Interfaces
 {
-    public interface ICustomLogger<T> where T : Enum
+    public interface ICustomLogger<T> : INullable where T : Enum
     {
         T LoggingLevels { get; }
         /// <summary>

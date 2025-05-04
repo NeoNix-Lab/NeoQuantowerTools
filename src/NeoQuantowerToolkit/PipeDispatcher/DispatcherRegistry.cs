@@ -1,6 +1,7 @@
 // Neo.Quantower.Toolkit.PipeDispatcher
 // DispatcherRegistry - Handles subscription and dynamic dispatching of incoming messages
 
+using Neo.Quantower.Abstractions.Interfaces;
 using Neo.Quantower.Abstractions.Models;
 using System;
 using System.Collections.Concurrent;
@@ -18,13 +19,13 @@ namespace Neo.Quantower.Toolkit.PipeDispatcher
         private readonly ConcurrentDictionary<Subscription, (string typeName, Func<object, Task>)> _subscriptions = new();
         private bool _disposed;
 
-        private Action<string> Logger;
+        private ICustomLogger<PipeDispatcherLoggingLevels> Logger;
 
         public ConcurrentDictionary<Subscription, (string typeName, Func<object, Task>)> SubscriptionsDictionary => this._subscriptions;
         public int SubsCount => this._subscriptions.Keys.Count;
         public List<Subscription> Subscriptions => this.SubscriptionsDictionary.Keys.ToList();
 
-        public DispatcherRegistry(Action<string> Logger)
+        public DispatcherRegistry(ICustomLogger<PipeDispatcherLoggingLevels> Logger)
         {
             this.Logger = Logger;
         }
@@ -41,7 +42,7 @@ namespace Neo.Quantower.Toolkit.PipeDispatcher
             var subscription = new Subscription(() => RemoveHandler(typeName, wrapper), tag);
             if (_subscriptions.ContainsKey(subscription))
             {
-                Logger?.Invoke($"Subscription already exists for {typeName} and Guid {tag}");
+                Logger?.Log(PipeDispatcherLoggingLevels.System,$"Subscription already exists for {typeName} and Guid {tag}");
                return null;
             }
             _handlers.AddOrUpdate(
@@ -90,7 +91,7 @@ namespace Neo.Quantower.Toolkit.PipeDispatcher
 
             if (subscription == null)
             {
-                Logger?.Invoke($"No subscription found for Guid {tag}");
+                Logger?.Log(PipeDispatcherLoggingLevels.Error, $"No subscription found for Guid {tag}");
                 throw new ArgumentNullException(nameof(subscription));
             }
 

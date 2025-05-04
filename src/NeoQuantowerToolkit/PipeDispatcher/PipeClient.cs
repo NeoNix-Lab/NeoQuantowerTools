@@ -6,19 +6,22 @@ using System.IO;
 using System.IO.Pipes;
 using System.Text;
 using System.Threading.Tasks;
+using Neo.Quantower.Abstractions.Models;
+using Neo.Quantower.Abstractions.Interfaces;
 
 namespace Neo.Quantower.Toolkit.PipeDispatcher
 {
     internal class PipeClient : IDisposable
     {
-        private readonly string _pipeName;
+        private  readonly string _pipeName;
         private NamedPipeClientStream _clientStream;
         private bool _disposed;
-        public static Action<string> Logger { get; private set; }
+        public ICustomLogger<PipeDispatcherLoggingLevels> Logger { get; private set; }
         public bool IsConnected => _clientStream != null && _clientStream.IsConnected;
+        public string PipeName => _pipeName;
 
 
-        public PipeClient(string pipeName, Action<string> logger)
+        public PipeClient(string pipeName, ICustomLogger<PipeDispatcherLoggingLevels> logger)
     {
             _pipeName = pipeName;
             Logger = logger;
@@ -29,7 +32,7 @@ namespace Neo.Quantower.Toolkit.PipeDispatcher
             _clientStream = new NamedPipeClientStream(".", _pipeName, PipeDirection.InOut, PipeOptions.Asynchronous);
             await _clientStream.ConnectAsync();
             _ = Task.Run(ReadLoopAsync);
-            Logger?.Invoke($"Client Connected");
+            Logger?.Log(PipeDispatcherLoggingLevels.System, $"Client Connected");
         }
 
         public async Task SendAsync(string message)
@@ -40,7 +43,7 @@ namespace Neo.Quantower.Toolkit.PipeDispatcher
             byte[] buffer = Encoding.UTF8.GetBytes(message);
             await _clientStream.WriteAsync(buffer, 0, buffer.Length);
             await _clientStream.FlushAsync();
-            Logger?.Invoke($"Client Send");
+            Logger?.Log(PipeDispatcherLoggingLevels.Success, $"Client Send");
         }
 
         private async Task ReadLoopAsync()
@@ -53,7 +56,7 @@ namespace Neo.Quantower.Toolkit.PipeDispatcher
                 {
                     string json = Encoding.UTF8.GetString(buffer, 0, bytesRead);
                     await PipeDispatcher.Instance.DispatchEnvelopeAsync(json);
-                    Logger?.Invoke($"Client Read");
+                    Logger?.Log(PipeDispatcherLoggingLevels.Success, $"Client Read");
                 }
             }
         }
@@ -65,11 +68,11 @@ namespace Neo.Quantower.Toolkit.PipeDispatcher
             try
             {
                 _clientStream?.Dispose();
-                Logger?.Invoke($"Client Disposed");
+                Logger?.Log(PipeDispatcherLoggingLevels.System, $"Client Disposed");
             }
-            catch
+            catch(Exception ex)
             {
-                // swallow any dispose errors
+                Logger?.Log(PipeDispatcherLoggingLevels.Error, $"Client Dispose Error {ex.Message}");
             }
 
             _disposed = true;

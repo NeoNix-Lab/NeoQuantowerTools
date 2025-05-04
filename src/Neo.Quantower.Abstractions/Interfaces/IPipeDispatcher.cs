@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Neo.Quantower.Abstractions
+namespace Neo.Quantower.Abstractions.Interfaces
 {
     public interface IPipeDispatcher
     {
@@ -23,7 +23,7 @@ namespace Neo.Quantower.Abstractions
         void Dispose();
         void DumpStatus();
         bool GetConneccionStatus();
-        Task Initialize(string pipeName = "NeoQuantowerDispatcher", Action<string> logger = null);
+        Task Initialize(string pipeName, ICustomLogger<PipeDispatcherLoggingLevels> logger, int maxClients);
         void onMessageRecived(string message);
         void onMessageSent(string message);
         Task PublishAsync<TMessage>(TMessage message);
