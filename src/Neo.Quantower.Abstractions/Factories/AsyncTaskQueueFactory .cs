@@ -24,7 +24,11 @@ namespace Neo.Quantower.Abstractions.Factories
             _maxRetries = maxRetries;
             _timeout = timeout ?? TimeSpan.FromSeconds(10);
         }
-
+        /// <summary>
+        /// Returns a new instance of AsyncTaskQueue with the specified Name base for his Guid.
+        /// </summary>
+        /// <param name="name">String for Guid</param>
+        /// <returns></returns>
         public AsyncTaskQueue Create(string name)
         {
             return new AsyncTaskQueue(_logger, GetGuidFromName(name))
@@ -34,7 +38,11 @@ namespace Neo.Quantower.Abstractions.Factories
                 TaskTimeout = _timeout
             };
         }
-
+        /// <summary>
+        /// Returns a new instance of AsyncTaskQueue with the specified Guid.
+        /// </summary>
+        /// <param name="name">Guid Id</param>
+        /// <returns></returns>
         public AsyncTaskQueue Create(Guid name)
         {
             return new AsyncTaskQueue(_logger, name)
@@ -50,7 +58,9 @@ namespace Neo.Quantower.Abstractions.Factories
             using var md5 = MD5.Create();
             return new Guid(md5.ComputeHash(Encoding.UTF8.GetBytes(input)));
         }
-
+        /// <summary>
+        /// Default logger for AsyncTaskQueue
+        /// </summary>
         internal struct InternalLogger : ICustomLogger<TaskResoult>
         {
             public Action<string> Logger { get; }
@@ -83,6 +93,11 @@ namespace Neo.Quantower.Abstractions.Factories
         /// </summary>
         public static AsyncTaskQueueFactory ForServerStreams(Action<string>? logger = null)
             => new(logger, maxLength: 100, maxRetries: 1, timeout: TimeSpan.FromSeconds(30));
+        /// <summary>
+        /// Returns a default async task queue factory for Dispatcher streams.
+        /// </summary>
+        /// <param name="logger"></param>
+        /// <returns></returns>
         public static AsyncTaskQueueFactory ForDispatcherStreams(Action<string>? logger = null)
             => new(logger, maxLength: 256, maxRetries: 3, timeout: TimeSpan.FromSeconds(10));
     }

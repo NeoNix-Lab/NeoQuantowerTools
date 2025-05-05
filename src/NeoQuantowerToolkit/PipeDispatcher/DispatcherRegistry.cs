@@ -15,21 +15,46 @@ namespace Neo.Quantower.Toolkit.PipeDispatcher
 {
     internal sealed class DispatcherRegistry : IDisposable
     {
+        /// <summary>
+        /// Retains the handlers for each message type.
+        /// </summary>
         private readonly ConcurrentDictionary<string, ImmutableHashSet<Func<object, Task>>> _handlers = new();
+        /// <summary>
+        /// Retains the subscriptions for each message type.
+        /// </summary>
         private readonly ConcurrentDictionary<Subscription, (string typeName, Func<object, Task>)> _subscriptions = new();
         private bool _disposed;
-
+        /// <summary>
+        /// Custom logger for logging messages.
+        /// </summary>
         private ICustomLogger<PipeDispatcherLoggingLevels> Logger;
-
+        /// <summary>
+        /// Returns the handlers for each message type.
+        /// </summary>
         public ConcurrentDictionary<Subscription, (string typeName, Func<object, Task>)> SubscriptionsDictionary => this._subscriptions;
+        /// <summary>
+        /// Returns the number of subscribed handlers.
+        /// </summary>
         public int SubsCount => this._subscriptions.Keys.Count;
+        /// <summary>
+        /// Returns the list of subscribed handlers.
+        /// </summary>
         public List<Subscription> Subscriptions => this.SubscriptionsDictionary.Keys.ToList();
-
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="Logger"></param>
         public DispatcherRegistry(ICustomLogger<PipeDispatcherLoggingLevels> Logger)
         {
             this.Logger = Logger;
         }
-
+        /// <summary>
+        /// Subscribes a handler for a specific message type.
+        /// </summary>
+        /// <typeparam name="TMessage">Type of Message</typeparam>
+        /// <param name="handler">Action</param>
+        /// <param name="tag"></param>
+        /// <returns></returns>
         public IDisposable Subscribe<TMessage>(Func<TMessage, Task> handler, Guid tag)
         {
             if (handler == null)
@@ -54,7 +79,11 @@ namespace Neo.Quantower.Toolkit.PipeDispatcher
             _subscriptions[subscription] = (typeName, wrapper);
             return subscription;
         }
-
+        /// <summary>
+        /// Dispatches the envelope to the appropriate handlers.
+        /// </summary>
+        /// <param name="envelopeJson"></param>
+        /// <returns></returns>
         public async Task DispatchEnvelopeAsync(string envelopeJson)
         {
             var envelope = JsonSerializer.Deserialize<MessageEnvelope>(envelopeJson);
@@ -75,7 +104,11 @@ namespace Neo.Quantower.Toolkit.PipeDispatcher
                 await handler(payload);
             }
         }
-
+        /// <summary>
+        /// Remove a specific handler from the list of handlers.
+        /// </summary>
+        /// <param name="typeName"></param>
+        /// <param name="handler"></param>
         private void RemoveHandler(string typeName, Func<object, Task> handler)
         {
             _handlers.AddOrUpdate(
@@ -84,7 +117,11 @@ namespace Neo.Quantower.Toolkit.PipeDispatcher
                 (_, existing) => existing.Remove(handler)
             );
         }
-
+        /// <summary>
+        /// Remove a specific set of handlers from the list of handlers.
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <exception cref="ArgumentNullException"></exception>
         public void Unsubscribe(Guid tag)
         {
             var subscription = _subscriptions.Keys.FirstOrDefault(s => s.Guid == tag);
@@ -101,8 +138,9 @@ namespace Neo.Quantower.Toolkit.PipeDispatcher
                 RemoveHandler(typeName, handler);
             }
         }
-
-
+        /// <summary>
+        /// Unsubscribes all subsriptions.
+        /// </summary>
         public void UnsubscribeAll()
         {
             foreach (var kvp in _subscriptions)

@@ -1,50 +1,123 @@
-# Neo.Quantower.Toolkit.AsyncTaskQueue
+# Neo.Quantower.Toolkit.Abstractions
 
-`AsyncTaskQueue` is a prioritized, asynchronous task execution queue designed for background processing within indicators, strategies, or any multithreaded Quantower context.
+`AsyncTaskQueue` is a lightweight asynchronous prioritized task processor.
+It supports:
 
-## ✅ Features
+- Prioritized execution (`High`, `Normal`, `Low`)
+- Task retry logic
+- Timeout per task
+- Soft backpressure with delayed task queue
 
-- Prioritized task queue: High, Normal, Low
-- Async/await support with built-in cancellation
-- Retry mechanism with configurable attempt count
-- Timeout for each task execution
-- Events for success/failure notifications
-- Safe and thread-aware background execution
+Designed for high-frequency, multi-client, low-latency scenarios such as server-stream dispatchers.
 
-## 🧱 Core Concepts
+---
 
-- `Enqueue(Func<CancellationToken, Task>, TaskPriority)` — add a task to the queue with a specified priority.
-- `MaxRetryAttempts` — retries tasks that fail or timeout, up to this number.
-- `TaskTimeout` — maximum allowed execution time per task.
-- `OnTaskCompleted` — event triggered when a task completes successfully.
-- `OnTaskFailed` — event triggered when a task fails or is cancelled.
+## Features
 
-## 🚀 Example usage
+- **Thread-safe** internal queue
+- **Non-blocking** background worker using `Task.Run`
+- **Timeout** and **retry** support for fault isolation
+- **Backpressure handling**: when queue overflows, low-priority tasks are delayed
+- **Custom logger** support via `ICustomLogger<T>`
+- **Factory support** for consistent and parameterized instantiation
+
+---
+
+## Usage Example
 
 ```csharp
-var queue = new AsyncTaskQueue
+// 1. Create the logger (optional)
+ICustomLogger<TaskResoult> logger = new ConsoleTaskLogger();
+
+// 2. Instantiate the queue
+var queue = new AsyncTaskQueue(logger)
 {
+    MaxQueueLength = 256,
     MaxRetryAttempts = 2,
-    TaskTimeout = TimeSpan.FromSeconds(10)
+    TaskTimeout = TimeSpan.FromSeconds(5)
 };
 
-queue.OnTaskCompleted += task => Console.WriteLine("Task completed.");
-queue.OnTaskFailed += ex => Console.WriteLine($"Task failed: {ex.Message}");
+// 3. Enqueue tasks with different priorities
+queue.Enqueue(async ct =>
+{
+    await Task.Delay(100, ct);
+    Console.WriteLine("High priority task completed");
+}, TaskPriority.High);
 
 queue.Enqueue(async ct =>
 {
-    await Task.Delay(500, ct);
-    Console.WriteLine("Executed.");
-});
+    Console.WriteLine("Normal task executed");
+    return;
+}, TaskPriority.Normal);
+
+queue.Enqueue(async ct =>
+{
+    throw new InvalidOperationException("Simulated failure");
+}, TaskPriority.Low);
 ```
 
-## 🔁 Lifecycle
+---
 
-- Runs a background task loop on construction.
-- Clean shutdown by calling `Dispose()` to cancel and flush the queue.
+## Using the Factory
 
-## 📦 Ideal for
+To centralize configuration and avoid repeated setup logic, use `AsyncTaskQueueFactory`:
 
-- Parallel/async operations from indicators without blocking update threads
-- Deferred or buffered execution
-- Fault-tolerant retryable background jobs
+```csharp
+// Create a factory with shared defaults
+var factory = new AsyncTaskQueueFactory(
+    logger: new ConsoleTaskLogger(),
+    maxQueueLength: 256,
+    maxRetryAttempts: 2,
+    timeout: TimeSpan.FromSeconds(5)
+);
+
+// Generate a queue for a specific client/module
+var queue = factory.Create("client-42");
+
+// Enqueue task
+queue.Enqueue(async ct =>
+{
+    await Task.Delay(100, ct);
+    Console.WriteLine("Client task completed");
+}, TaskPriority.Normal);
+```
+
+You can also expose static presets via `AsyncTaskQueueDefaultFactories.ForServerStreams()`.
+
+---
+
+## Enum: `TaskPriority`
+
+| Value | Description |
+|-------|-------------|
+| `High` | Critical operations (e.g., initialization, client connections) |
+| `Normal` | Standard tasks |
+| `Low` | Delayed or background operations |
+
+---
+
+## Enum: `TaskResoult`
+
+| Value | Description |
+|--------|-------------|
+| `Completed` | Task finished successfully |
+| `Failed` | Task threw exception (last retry) |
+| `Delayed` | Task was temporarily deferred (backpressure) |
+| `Reenqueued` | Delayed task moved back into active queue |
+| `Queued` | Task added to queue successfully |
+
+---
+
+## Integration Tips
+
+- You can create one `AsyncTaskQueue` per client / component
+- Use it behind a factory for DI or naming-based routing
+
+
+---
+
+## License
+
+MIT License © 2025
+
+

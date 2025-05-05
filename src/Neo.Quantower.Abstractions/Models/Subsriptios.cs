@@ -11,10 +11,19 @@ namespace Neo.Quantower.Abstractions.Models
         private readonly Action _unsubscribe;
         private readonly Guid _guid;
         private bool _disposed;
-
+        /// <summary>
+        /// Dispose flag
+        /// </summary>
         public bool Disposed => this._disposed;
+        /// <summary>
+        /// Subscription Guid
+        /// </summary>
         public Guid Guid => this._guid;
-
+        /// <summary>
+        /// Costructor
+        /// </summary>
+        /// <param name="unsubscribe"></param>
+        /// <param name="guid"></param>
         public Subscription(Action unsubscribe, Guid guid)
         {
             _guid = guid;

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Neo.Quantower.Abstractions.Interfaces
 {
-    public interface IAsyncTaskQueueFactory
+    internal interface IAsyncTaskQueueFactory
     {
         AsyncTaskQueue Create(string clientName);
     }

@@ -20,12 +20,27 @@ namespace Neo.Quantower.Abstractions.Models
         private readonly object _locker = new();
         private readonly ICustomLogger<TaskResoult>? _logger;
         private readonly Task _worker;
-
+        /// <summary>
+        /// Returns the unique identifier for this task queue instance.
+        /// </summary>
         public Guid Tag { get; }
+        /// <summary>
+        /// Returns the maxinum number of tasks that can be queued before backpressure is applied.
+        /// </summary>
         public int MaxQueueLength { get; set; } = 100;
+        /// <summary>
+        /// Rerturns the maximum number of retry attempts for each task before it is considered failed.
+        /// </summary>
         public int MaxRetryAttempts { get; set; } = 3;
+        /// <summary>
+        /// Returns the timeout duration for each task execution. If a task does not complete within this time, it will be cancelled.
+        /// </summary>
         public TimeSpan TaskTimeout { get; set; } = TimeSpan.FromSeconds(15);
-
+        /// <summary>
+        /// Costructor for creating an instance of AsyncTaskQueue.
+        /// </summary>
+        /// <param name="logger"></param>
+        /// <param name="tag"></param>
         public AsyncTaskQueue(ICustomLogger<TaskResoult>? logger = null, Guid? tag = null)
         {
             _logger = logger;
@@ -129,7 +144,9 @@ namespace Neo.Quantower.Abstractions.Models
         }
 
         private int GetTotalQueueLength() => _taskQueues.Values.Sum(q => q.Count);
-
+        /// <summary>
+        /// Disposes the task queue, cancelling all pending tasks and waiting for the worker thread to finish.
+        /// </summary>
         public void Dispose()
         {
             _cts.Cancel();

@@ -1,6 +1,6 @@
 # Neo.Quantower.Toolkit
 
-An advanced, modular toolkit designed to extend Quantower indicators and strategies for both .NET Framework 4.7.2 and .NET 8.0 environments.
+An advanced, modular toolkit designed to extend Quantower indicators and strategies .NET 8.0 environments.
 
 ---
 
@@ -8,14 +8,11 @@ An advanced, modular toolkit designed to extend Quantower indicators and strateg
 
 - **AsyncHelpers/AsyncTaskQueue.cs**: Asynchronous FIFO task management with priorities, retries, and timeouts.
 - **Core/LoggerHelper.cs**: Simple wrapper over Quantower Core.Loggers for consistent logging.
-- **Extensions/ChartExtensions.cs**: Utilities for enhancing chart operations.
-- **Models/TpoSlot.cs**: Basic models for TPO (Time Price Opportunity) Profile handling.
-
 ---
 
 ## 🚀 Usage
 
-1. Run `build.bat` to build the solution and create a multi-framework `.nupkg` NuGet package.
+1. Run `build.bat` to build the solution and create `.nupkg` NuGet package.
 2. Install the package into your Visual Studio projects:
    - Open Visual Studio.
    - Manage NuGet Packages > Browse > Add Local Package.

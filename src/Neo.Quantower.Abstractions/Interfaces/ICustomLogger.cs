@@ -10,6 +10,9 @@ namespace Neo.Quantower.Abstractions.Interfaces
 {
     public interface ICustomLogger<T> : INullable where T : Enum
     {
+        //TODO : Add an Action to log with a specific log level
+        // public Action<string, T> Logger { get; }
+
         /// <summary>
         /// Logs a message with the specified log level.
         /// </summary>
@@ -21,5 +24,7 @@ namespace Neo.Quantower.Abstractions.Interfaces
         /// Logging function to be used for logging messages.
         /// <summary"/>
         public Action<string> Logger { get; }
+        
+
     }
 }

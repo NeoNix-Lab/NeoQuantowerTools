@@ -15,24 +15,49 @@ namespace Neo.Quantower.Toolkit.PipeDispatcher
 {
 	internal class PipeServer : IDisposable, IPipeClient
 	{
-		private const bool _IsServer = true;
-
+		/// <summary>
+		/// The name of the pipe used for communication.
+		/// </summary>
 		private readonly string _pipeName;
+		/// <summary>
+		/// The NamedPipeServerStream used for communication with the server.
+		/// </summary>
 		private NamedPipeServerStream _serverStream;
+		/// <summary>
+		/// Flag indicating whether the server has been disposed.
+		/// </summary>
 		private bool _disposed;
+		/// <summary>
+		/// Injected logger for logging messages.
+		/// </summary>
 		public ICustomLogger<PipeDispatcherLoggingLevels> Logger { get; private set; }
-		public bool IsServer => _IsServer;
+		/// <summary>
+		/// returns true if the server is connected to the client.
+		/// </summary>
 		public bool IsConnected => _serverStream != null && _serverStream.IsConnected;
+		/// <summary>
+		/// Returns the name of the pipe used for communication.
+		/// </summary>
 		public string PipeName => _pipeName;
+		/// <summary>
+		/// Returns the unique identifier for the server.
+		/// </summary>
 		public Guid Id { get; } = new();
-
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="pipeName">Pipe name</param>
+		/// <param name="logger">Injeted logger</param>
 		public PipeServer(string pipeName, ICustomLogger<PipeDispatcherLoggingLevels> logger)
 		{
 			_pipeName = pipeName;
 			Logger = logger;
 		}
-
-		public async Task StartAsync()
+		/// <summary>
+		/// entry point for the server to start listening for incoming connections.
+		/// </summary>
+		/// <returns>task resoult</returns>
+		internal async Task StartAsync()
 		{
 			_serverStream = new NamedPipeServerStream(_pipeName, PipeDirection.InOut, NamedPipeServerStream.MaxAllowedServerInstances,
 				PipeTransmissionMode.Byte, PipeOptions.Asynchronous);
@@ -41,8 +66,12 @@ namespace Neo.Quantower.Toolkit.PipeDispatcher
 			_ = Task.Run(ReadLoopAsync);
 			Logger?.Log(PipeDispatcherLoggingLevels.System, $"Server Connected");
 		}
-
-		public async Task SendAsync(string message)
+		/// <summary>
+		/// Entry point for sending messages to the client.
+		/// </summary>
+		/// <param name="message"></param>
+		/// <returns>task resoult</returns>
+		internal async Task SendAsync(string message)
 		{
 			if (_serverStream == null || !_serverStream.IsConnected)
 				return;
@@ -52,7 +81,10 @@ namespace Neo.Quantower.Toolkit.PipeDispatcher
 			await _serverStream.FlushAsync();
 			Logger?.Log(PipeDispatcherLoggingLevels.Success, $"Server Send");
 		}
-
+		/// <summary>
+		/// Entry point for reading messages from the client.
+		/// </summary>
+		/// <returns></returns>
 		private async Task ReadLoopAsync()
 		{
 			var buffer = new byte[8192];
@@ -78,9 +110,9 @@ namespace Neo.Quantower.Toolkit.PipeDispatcher
 				Logger?.Log(PipeDispatcherLoggingLevels.System, $"Server Disposed");
 
 			}
-			catch
+			catch (Exception ex)
 			{
-				// swallow any dispose errors
+				Logger?.Log(PipeDispatcherLoggingLevels.Error, $"Error disposing server: {ex.Message}");
 			}
 
 			_disposed = true;
