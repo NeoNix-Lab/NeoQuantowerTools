@@ -1,0 +1,73 @@
+# Roadmap: NeoQuantowerToolkit
+
+## 1. Unit tests & CI pipeline
+- [ ] **Progetti di test**
+  - [ ] Creare un progetto di test XUnit/NUnit per ogni modulo:
+    - `NeoQuantower.Toolkit.Tests.Dispatcher`
+    - `NeoQuantower.Toolkit.Tests.PipeClientServer`
+    - `NeoQuantower.Toolkit.Tests.AsyncTaskQueue`
+    - `NeoQuantower.Toolkit.Tests.RingBuffer`
+    - `NeoQuantower.Toolkit.Tests.UIModule`
+- [ ] **Mocking e fixtures**
+  - [ ] Definire mock di `IPipeClient`/`IPipeServer`
+  - [ ] Creare fixture di test per iniettare loggers e code di test
+- [ ] **Scrittura dei test**
+  - [ ] Dispatcher: subscribe/unsubscribe, dispatch concorrente, error handling
+  - [ ] PipeClient/Server: connect/disconnect, invio/ricezione, riconnessione
+  - [ ] AsyncTaskQueue: priorità, timeout, retry, backpressure, cancellazione
+  - [ ] RingBuffer: insert, read, overflow, thread-safety
+  - [ ] UI Module: creazione dinamica controlli, binding, gestione errori
+- [ ] **Coverage e report**
+  - [ ] Integrare Coverlet per report di code coverage
+  - [ ] Aggiungere badge di coverage al README
+- [ ] **GitHub Actions**
+  - [ ] Creare `.github/workflows/ci.yml` con job:
+    - `dotnet restore`
+    - `dotnet build --configuration Release`
+    - `dotnet test --collect:"XPlat Code Coverage"`
+  - [ ] Pubblicare report di coverage (artifact o Codecov)
+
+## 2. Implement GUI extensions
+- [ ] **Analisi SDK Quantower**
+  - [ ] Rivedere documentazione Quantower UI-Extensions (WinForms/WPF)
+  - [ ] Verificare compatibilità .NET 8
+- [ ] **Definizione interfacce**
+  - [ ] `IPluginUIFactory`: factory per creare viste/configurazioni
+  - [ ] `IPluginViewModel`: view-model base per binding
+- [ ] **Scaffold XAML/WinForms**
+  - [ ] Creare UserControl template con area log e pannello proprietà
+  - [ ] Implementare stile base (font, colori, layout) conforme a Quantower
+- [ ] **Integrazione con Dispatcher**
+  - [ ] Registrare ogni controllo al `PipeDispatcher` per eventi
+  - [ ] Aggiungere metodi di invio comandi dall’UI al core
+- [ ] **Configurazione runtime**
+  - [ ] Esportare pannello di configurazione (pipe name, livelli log)
+  - [ ] Salvare/riutilizzare impostazioni via JSON o SQLite
+- [ ] **Esempio demo**
+  - [ ] Implementare view di esempio con:
+    - Pulsante “Ping”
+    - “Publish message”
+    - Visualizzazione log
+- [ ] **Documentazione**
+  - [ ] Aggiornare README con guida al modulo UI
+  - [ ] Inserire esempi di codice e screenshot
+
+## 3. Prepare & Publish NuGet package
+- [ ] **Organizzazione output**
+  - [ ] Decidere tra un unico package o due (Strategy + Core)
+- [ ] **Metadata dei progetti**
+  - [ ] Aggiornare `<PackageId>`, `<Version>`, `<Authors>`, `<Description>`, `<RepositoryUrl>` in `.csproj`
+  - [ ] Aggiungere tags e dipendenze corrette
+- [ ] **Pipeline di packaging**
+  - [ ] Estendere `ci.yml` con job `pack`:
+    - `dotnet pack --configuration Release --no-build`
+  - [ ] Caricare artefatto `.nupkg`
+- [ ] **Autenticazione e pubblicazione**
+  - [ ] Aggiungere segreto `NUGET_API_KEY` nel repo
+  - [ ] Configurare `nuget push` nel workflow
+- [ ] **Verifica post-publish**
+  - [ ] Creare progetto di test che consuma il package da nuget.org
+  - [ ] Verificare assembly, dipendenze e doc
+- [ ] **Aggiornamento documentazione**
+  - [ ] Istruzioni per `dotnet add package NeoQuantower.Toolkit`
+  - [ ] Esempio rapido di utilizzo in client Quantower

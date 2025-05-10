@@ -36,9 +36,10 @@ namespace Neo.Quantower.Abstractions.Models
                 if (index < 0 || index >= _count)
                     throw new ArgumentOutOfRangeException(nameof(index), "Index out of range");
 
-                int realIndex = FromBeginning
-                    ? (_head - _count + index + _size) % _size
-                    : (_head - 1 - index + _size) % _size;
+                if (!FromBeginning)
+                    index = _count-1-index;
+
+                int realIndex = (_head - _count + index + _size) % _size;
 
                 return _buffer[realIndex];
             }
@@ -51,6 +52,8 @@ namespace Neo.Quantower.Abstractions.Models
         /// <param name="fromBeginning">Whether to iterate from the oldest (true) or most recent (false).</param>
         public RingBuffer(int length, bool fromBeginning = true)
         {
+            if (length <= 0)
+                throw new ArgumentOutOfRangeException(nameof(length), "Buffer length must be greater than zero.");
             _size = length;
             _buffer = _pool.Rent(length);
             _head = 0;
@@ -92,6 +95,14 @@ namespace Neo.Quantower.Abstractions.Models
         /// </param>
         /// <returns>The value at the specified logical index.</returns>
         /// <exception cref="ArgumentOutOfRangeException">If the index is out of bounds.</exception>
+
+        #region 🧯 DEPRECATED [Da rimuovere nella prossima versione]
+        /*
+         * ⚠️ Questo blocco è deprecato
+         * TODO: sostituire o rimuovere
+         */
+        #endregion
+
         public T GetWithReversal(int index)
         {
             if (index < -_count || index >= _count)
@@ -110,16 +121,8 @@ namespace Neo.Quantower.Abstractions.Models
             if (_count == 0)
                 throw new ArgumentOutOfRangeException(nameof(_buffer), "The buffer is empty.");
 
-            if (FromBeginning)
-            {
-                for (int i = 0; i < _count; i++)
-                    yield return this[i];
-            }
-            else
-            {
-                for (int i = _count - 1; i >= 0; i--)
-                    yield return this[i];
-            }
+            for (int i = 0; i < _count; i++)
+                yield return this[i];
         }
 
         /// <summary>
@@ -131,23 +134,15 @@ namespace Neo.Quantower.Abstractions.Models
         /// <exception cref="ArgumentOutOfRangeException">If the range is invalid or the buffer is empty.</exception>
         public IEnumerable<T> GetRange(int from, int to)
         {
-            if (_count <= 0 || to > _count || from < 0 || from > to)
+            if (_count <= 0 || to >= _count || from < 0 || from > to)
                 throw new ArgumentOutOfRangeException(nameof(_buffer), "Invalid range or empty buffer.");
 
-            if (FromBeginning)
-            {
-                for (int i = from; i < to; i++)
-                    yield return this[i];
-            }
-            else
-            {
-                int delta = to - from;
-                for (int i = _count - 1; i >= delta; i--)
-                    yield return this[i];
-            }
+            for (int i = from; i <= to; i++)
+                yield return this[i];
         }
 
         /// <inheritdoc/>
+        /// TODO: Implementare TEST per questa funzione
         public IEnumerable<T> GetOrderBy<TKey>(Func<T, TKey> selector) where TKey : IComparable<TKey>
         {
             return GetItems().OrderBy(selector);
