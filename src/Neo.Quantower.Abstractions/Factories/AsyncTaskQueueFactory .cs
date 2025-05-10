@@ -13,6 +13,7 @@ namespace Neo.Quantower.Abstractions.Factories
         private readonly int _maxRetries;
         private readonly TimeSpan _timeout;
 
+
         public AsyncTaskQueueFactory(
             Action<string>? logger = null,
             int maxLength = 100,
