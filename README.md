@@ -1,4 +1,4 @@
-# Neo.Quantower.Toolkit [![CI Status](https://github.comNeoNix-Lab/NeoQuantowerTools/actions/workflows/ci.yml/badge.svg)](https://github.com/NeoQuantowerTools/actions/workflows/workflows/ci.yml)
+# Neo.Quantower.Toolkit [![CI Status](https://github.comNeoNix-Lab/NeoQuantowerTools/actions/workflows/ci.yml/badge.svg)](https://github.com/NeoQuantowerTools/actions/workflows/ci.yml)
 
 An advanced, modular toolkit designed to extend Quantower indicators and strategies .NET 8.0 environments.
 
