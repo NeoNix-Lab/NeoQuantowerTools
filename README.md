@@ -1,7 +1,7 @@
 # Neo.Quantower.Toolkit
 
-[![CI Status](https://github.com/NeoNix-Lab/NeoQuantowerTools/actions/workflows/ci.yml/badge.svg)](https://github.com/NeoQuantowerTools/actions/workflows/ci.yml)
-[![Issues](https://img.shields.io/github/issues/NeoNix-Lab/NeoQuantowerTools.svg?style=flat-square)](https://github.com/NeoNix-Lab/NeoQuantowerTools/issues)
+[![CI Status](https://github.com/NeoNix-Lab/NeoQuantowerTools/actions/workflows/ci.yml/badge.svg)](https://github.com/NeoQuantowerTools/actions/workflows/ci.yml)]
+[![Issues](https://img.shields.io/github/issues/NeoNix-Lab/NeoQuantowerTools.svg?style=flat-square)](https://github.com/NeoNix-Lab/NeoQuantowerTools/issues)]
 ![.NET](https://img.shields.io/badge/.NET-8.0-blue?style=flat-square)
  
 An advanced, modular toolkit designed to extend Quantower indicators and strategies .NET 8.0 environments.
