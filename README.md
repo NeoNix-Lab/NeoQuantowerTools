@@ -1,7 +1,12 @@
-# Neo.Quantower.Toolkit [![CI Status](https://github.com/NeoNix-Lab/NeoQuantowerTools/actions/workflows/ci.yml/badge.svg)](https://github.com/NeoQuantowerTools/actions/workflows/ci.yml)
+# Neo.Quantower.Toolkit
 
-[![Tests](https://img.shields.io/github/actions/workflow/status/NeoNix-Lab/NeoQuantowerTools/ci.yml?label=Tests&style=flat-square&color=blue)](https://github.com/NeoNix-Lab/NeoQuantowerTools/actions/workflows/ci.yml)
-[![Coverage](https://img.shields.io/coveralls/github/NeoNix-Lab/NeoQuantowerTools?style=flat-square&label=Coverage&color=yellowgreen)](https://coveralls.io/github/NeoNix-Lab/NeoQuantowerTools)
+ [![CI Status](https://github.com/NeoNix-Lab/NeoQuantowerTools/actions/workflows/ci.yml/badge.svg)](https://github.com/NeoQuantowerTools/actions/workflows/ci.yml)
+ [![License](https://img.shields.io/github/license/NeoNix-Lab/NeoQuantowerTools.svg?style=flat-square)](LICENSE.txt)
+ [![Issues](https://img.shields.io/github/issues/NeoNix-Lab/NeoQuantowerTools.svg?style=flat-square)](https://github.com/NeoNix-Lab/NeoQuantowerTools/issues)
+ [![NuGet](https://img.shields.io/nuget/v/NeoQuantower.Toolkit.svg?style=flat-square)](https://www.nuget.org/packages/NeoQuantower.Toolkit)
+ ![.NET](https://img.shields.io/badge/.NET-8.0-blue?style=flat-square)
+ [![Dependabot](https://img.shields.io/badge/Dependabot-enabled-4baaff.svg?style=flat-square)](https://github.com/NeoNix-Lab/NeoQuantowerTools/pulls?q=is%3Apr+is%3Aopen+label%3A%22dependencies%22)
+ 
 
 An advanced, modular toolkit designed to extend Quantower indicators and strategies .NET 8.0 environments.
 
