@@ -1,0 +1,40 @@
+# .github/workflows/daily-snapshot.yml
+name: Daily Issues Snapshot
+
+# Se vuoi eseguirlo anche manualmente con “Run workflow”
+on:
+  schedule:
+    # 16:00 UTC = 18:00 CEST
+    - cron: '0 16 * * *'
+  workflow_dispatch:
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: true   # per il push in seguito
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run snapshot script
+        run: python snapshot_issues_enhanced.py
+
+      - name: Commit & Push updated JSON
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add issues.json
+          # se ci sono cambiamenti, committa e push
+          git diff --exit-code --quiet || (\
+            git commit -m "chore: daily issues snapshot $(date -u +'%Y-%m-%d')" && \
+            git push origin HEAD:main\
+          )
