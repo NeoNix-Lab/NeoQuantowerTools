@@ -4,7 +4,7 @@ import subprocess, json, sys, textwrap, requests, os
 # --- CONFIGURA QUI ---
 GH_TOKEN    = GH_TOKEN = os.getenv("GITHUB_TOKEN") or os.getenv("GH_TOKEN")
 GH_ORG       = "NeoNix-Lab"
-GH_PROJECT  = "4"               # numero del Project v2
+GH_PROJECT  = 4               # numero del Project v2
 GH_REPOS    = ["NeoQuantowerTools","Rnn_V0_1", "QT_Ai_Plug_In_Integration"]    # lista dei repo
 OUT_FILE    = "issues.json"
 # ----------------------
@@ -17,7 +17,7 @@ headers = {
 def fetch_project_issues():
     query = (
         'query($org:String!,$num:Int!){'
-        'organization(login:$org){'
+        'user(login:$org){'
         'projectV2(number:$num){'
         'items(first:100){nodes{content{__typename '
         '... on Issue{repository{name} number title body '
@@ -31,7 +31,9 @@ def fetch_project_issues():
         headers=headers
     )
     resp.raise_for_status()
-    data = resp.json()["data"]["organization"]["projectV2"]["items"]["nodes"]
+    
+
+    data = resp.json()["data"]["user"]["projectV2"]["items"]["nodes"]
     out = []
     for n in data:
         c = n["content"]
@@ -82,7 +84,7 @@ def main():
     print("🚀 Fetching issues from repos…")
     repo_issues = fetch_repo_issues()
     print(f"  → {len(repo_issues)} issue aperti nei repo")
-    all_issues = project_issues + repo_issues
+    all_issues = project_issues #+ repo_issues
     with open(OUT_FILE, "w", encoding="utf-8") as f:
         json.dump(all_issues, f, indent=2, ensure_ascii=False)
     print(f"\n✅ Snapshot completo: {len(all_issues)} issue in {OUT_FILE}")

@@ -1,0 +1,231 @@
+[
+  {
+    "repo": "NeoQuantowerTools",
+    "number": 1,
+    "title": "Add unit tests for Dispatcher events",
+    "body": "Test async event handling and edge case propagation",
+    "labels": [
+      "CI/CD"
+    ],
+    "assignees": [],
+    "state": "open",
+    "source": "project"
+  },
+  {
+    "repo": "NeoQuantowerTools",
+    "number": 2,
+    "title": "Implement test actions",
+    "body": "Set up automated CI workflows for actions and validate outputs",
+    "labels": [
+      "Testing"
+    ],
+    "assignees": [],
+    "state": "open",
+    "source": "project"
+  },
+  {
+    "repo": "NeoQuantowerTools",
+    "number": 3,
+    "title": "Train model from an indicator",
+    "body": "Implement training loop using MA indicator data",
+    "labels": [
+      "ML"
+    ],
+    "assignees": [],
+    "state": "open",
+    "source": "project"
+  },
+  {
+    "repo": "NeoQuantowerTools",
+    "number": 4,
+    "title": "Add SQLite writer module",
+    "body": "Persist model outputs and trades to SQLite database",
+    "labels": [
+      "Database"
+    ],
+    "assignees": [],
+    "state": "open",
+    "source": "project"
+  },
+  {
+    "repo": "NeoQuantowerTools",
+    "number": 5,
+    "title": "Design plugin UI creation module",
+    "body": "Sketch the architecture for dynamic UI plugin loading",
+    "labels": [
+      "UI"
+    ],
+    "assignees": [],
+    "state": "open",
+    "source": "project"
+  },
+  {
+    "repo": "NeoQuantowerTools",
+    "number": 6,
+    "title": "Integrate real-time data feed",
+    "body": "Connect to websocket API for live market data",
+    "labels": [
+      "Data"
+    ],
+    "assignees": [],
+    "state": "open",
+    "source": "project"
+  },
+  {
+    "repo": "NeoQuantowerTools",
+    "number": 7,
+    "title": "Execute trade from a trained model",
+    "body": "Develop execution module based on model signals",
+    "labels": [
+      "Trading"
+    ],
+    "assignees": [],
+    "state": "open",
+    "source": "project"
+  },
+  {
+    "repo": "NeoQuantowerTools",
+    "number": 8,
+    "title": "Refactor core event loop",
+    "body": "Improve performance and modularity of the main loop",
+    "labels": [
+      "Refactor"
+    ],
+    "assignees": [],
+    "state": "closed",
+    "source": "project"
+  },
+  {
+    "repo": "NeoQuantowerTools",
+    "number": 9,
+    "title": "Track model results",
+    "body": "Finetuning",
+    "labels": [
+      "Experimental"
+    ],
+    "assignees": [],
+    "state": "open",
+    "source": "project"
+  },
+  {
+    "repo": "Rnn_V0_1",
+    "number": 1,
+    "title": "Fix this ridiculous branch structure",
+    "body": "Reorganize folder hierarchy for dataset and model code",
+    "labels": [
+      "cleanup"
+    ],
+    "assignees": [],
+    "state": "closed",
+    "source": "project"
+  },
+  {
+    "repo": "Rnn_V0_1",
+    "number": 2,
+    "title": "Reshape as a back-end deleting streamlit",
+    "body": "Convert Streamlit UI to an API-based backend",
+    "labels": [
+      "architecture"
+    ],
+    "assignees": [],
+    "state": "closed",
+    "source": "project"
+  },
+  {
+    "repo": "Rnn_V0_1",
+    "number": 3,
+    "title": "Add async support to data loader",
+    "body": "Parallelize CSV parsing with asyncio",
+    "labels": [
+      "async"
+    ],
+    "assignees": [],
+    "state": "open",
+    "source": "project"
+  },
+  {
+    "repo": "Rnn_V0_1",
+    "number": 4,
+    "title": "create documentation",
+    "body": "Write README and usage examples",
+    "labels": [
+      "documentation"
+    ],
+    "assignees": [],
+    "state": "open",
+    "source": "project"
+  },
+  {
+    "repo": "Rnn_V0_1",
+    "number": 5,
+    "title": "Run training on cloud",
+    "body": "Exute training on azure cloud",
+    "labels": [
+      "question",
+      "Experimental"
+    ],
+    "assignees": [],
+    "state": "open",
+    "source": "project"
+  },
+  {
+    "repo": "QT_Ai_Plug_In_Integration",
+    "number": 1,
+    "title": "Integrate Quantower API",
+    "body": "Wrap core functions for plugin interface",
+    "labels": [
+      "plugin"
+    ],
+    "assignees": [],
+    "state": "open",
+    "source": "project"
+  },
+  {
+    "repo": "QT_Ai_Plug_In_Integration",
+    "number": 2,
+    "title": "Test plugin load/unload",
+    "body": "Ensure clean dynamic loading in Quantower env",
+    "labels": [
+      "testing"
+    ],
+    "assignees": [],
+    "state": "open",
+    "source": "project"
+  },
+  {
+    "repo": "NeoNix-Lab",
+    "number": 2,
+    "title": "Implement test actions",
+    "body": "Setup email notifications for action events",
+    "labels": [
+      "notification"
+    ],
+    "assignees": [],
+    "state": "open",
+    "source": "project"
+  },
+  {
+    "repo": "NeoNix-Lab",
+    "number": 3,
+    "title": "Review project board automation",
+    "body": "Assess current triage workflows and propose improvements",
+    "labels": [
+      "process"
+    ],
+    "assignees": [],
+    "state": "open",
+    "source": "project"
+  },
+  {
+    "repo": "NeoQuantowerTools",
+    "title": "Provide a command-line interface for snapshot control",
+    "body": "Add a lightweight CLI tool to trigger snapshot generation, inspect current issue JSON and invoke the sync workflow locally.",
+    "labels": [
+      "CLI",
+      "Enhancement"
+    ],
+    "assignees": [],
+    "state": "open",
+    "source": "snapshot"
+  }
+]

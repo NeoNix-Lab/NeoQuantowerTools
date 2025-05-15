@@ -1,0 +1,98 @@
+﻿# .github/workflows/sync-issues.yml
+name: Sync Issues from JSON
+
+on:
+  push:
+    paths:
+      - 'issues.json'
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Sync issues (flat array)
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            // Qui carichiamo un array di issue
+            const issues = JSON.parse(fs.readFileSync('issues.json', 'utf-8'));
+
+            for (const item of issues) {
+              const repo = item.repo;
+              // 1) otteniamo o creiamo la milestone
+              // (stesso codice di before, omesso qui per brevità)
+              const { data: existingMilestones } = await github.issues.listMilestones({
+                owner: context.repo.owner,
+                repo,
+                state: 'all'
+              });
+              const map = Object.fromEntries(existingMilestones.map(m => [m.title, m.number]));
+              let milestoneNumber = null;
+              if (item.milestone?.title) {
+                milestoneNumber = map[item.milestone.title] 
+                 || (await github.issues.createMilestone({
+                      owner: context.repo.owner,
+                      repo,
+                      title: item.milestone.title,
+                      due_on: item.milestone.due_on || null
+                    })).data.number;
+              }
+
+              // 2) cerchiamo issue aperto con titolo identico
+              const q = `repo:${context.repo.owner}/${repo} in:title "${item.title}" state:open`;
+              const { data: search } = await github.search.issuesAndPullRequests({ q });
+
+              let issueNumber;
+              if (search.total_count > 0) {
+                issueNumber = search.items[0].number;
+                // aggiorniamo issue esistente
+                await github.issues.update({
+                  owner: context.repo.owner,
+                  repo,
+                  issue_number: issueNumber,
+                  title: item.title,
+                  body: item.body,
+                  labels: item.labels,
+                  assignees: item.assignees,
+                  milestone: milestoneNumber,
+                  state: item.state
+                });
+              } else {
+                const created = await github.issues.create({
+                  owner: context.repo.owner,
+                  repo,
+                  title: item.title,
+                  body: item.body,
+                  labels: item.labels,
+                  assignees: item.assignees,
+                  milestone: milestoneNumber
+                });
+                issueNumber = created.data.number;
+                if (item.state === 'closed') {
+                  await github.issues.update({
+                    owner: context.repo.owner,
+                    repo,
+                    issue_number: issueNumber,
+                    state: 'closed'
+                  });
+                }
+              }
+
+              // 3) traccia relazioni (linked_issues) con un commento
+              if (Array.isArray(item.linked_issues) && item.linked_issues.length) {
+                const body = item.linked_issues
+                  .map(l => `🔗 Relates to ${l.repo}#${l.number}`)
+                  .join('\n');
+                await github.issues.createComment({
+                  owner: context.repo.owner,
+                  repo,
+                  issue_number: issueNumber,
+                  body
+                });
+              }
+            }
