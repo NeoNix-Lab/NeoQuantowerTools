@@ -7,7 +7,7 @@
     <AssemblyName>Neo.Quantower.Toolkit</AssemblyName>
     <OutputType>Library</OutputType>
     <LangVersion>latest</LangVersion>
-    <Version>0.0.3</Version>
+    <Version>0.0.5</Version>
   </PropertyGroup>
 
   <ItemGroup>

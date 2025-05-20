@@ -17,9 +17,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4D181022-25B9-4905-8B0B-754A56571C54}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		Buider.bat = Buider.bat
 		build.bat = build.bat
-		.github\workflows\dotnet.yml = .github\workflows\dotnet.yml
 		.github\workflows\daily-snapshot.yml = .github\workflows\daily-snapshot.yml
+		.github\workflows\dotnet.yml = .github\workflows\dotnet.yml
 		issues.json = issues.json
 		snapshot-issues.py = snapshot-issues.py
 		.github\workflows\sync-issues.yml = .github\workflows\sync-issues.yml
