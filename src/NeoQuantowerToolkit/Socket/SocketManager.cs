@@ -11,6 +11,10 @@ using System.Threading.Tasks;
 
 namespace Neo.Quantower.Toolkit.Socket
 {
+
+    //📝 TODO: [Make it more user frendly]
+
+
     /// <summary>
     /// A manager class that handles both TCP server and client roles with persistent socket communication.
     /// Supports JSON-serialized message exchange with length-prefixed framing.
@@ -144,8 +148,11 @@ namespace Neo.Quantower.Toolkit.Socket
                     this.MessageReceived?.Invoke(this, message);
                     Console.WriteLine($"[MSG] {message.Command}: {message.Payload}");
 
-                    var response = new StreaMessage { Command = "ACK", Payload = "Received" };
-                    await SendMessageAsync(stream, response, ct);
+
+                    //📝 TODO: [Handle Ping Pong]
+
+                    //var response = new StreaMessage { Command = "ACK", Payload = "Received" };
+                    //await SendMessageAsync(stream, response, ct);
                 }
             }
             catch (Exception ex)
@@ -176,8 +183,10 @@ namespace Neo.Quantower.Toolkit.Socket
                 this.MessageReceived?.Invoke(this, message);
                 Console.WriteLine($"[MSG] {message.Command}: {message.Payload}");
 
-                var response = new StreaMessage { Command = "ACK", Payload = "Received" };
-                await SendMessageAsync(_stream, response, this._cancellationToken);
+                //📝 TODO: [Handle Ping Pong]
+
+                //var response = new StreaMessage { Command = "ACK", Payload = "Received" };
+                //await SendMessageAsync(_stream, response, this._cancellationToken);
             }
 
             Console.WriteLine("Connected to server.");
