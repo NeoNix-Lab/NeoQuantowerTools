@@ -30,7 +30,9 @@ namespace Neo.Quantower.Toolkit.Socket
         public int MaxClient { get; init; } = 3;
 
         private readonly List<TcpClient> _tcpClients = new();
+        public List<TcpClient> TcpClients => _tcpClients;
         private NetworkStream? _stream;
+        public NetworkStream? Stream => _stream;
         private readonly CancellationToken _cancellationToken;
         private CancellationTokenSource _cts;
         public event EventHandler<StreaMessage>? MessageReceived;
@@ -66,6 +68,9 @@ namespace Neo.Quantower.Toolkit.Socket
             else
                 await ConnectAsync();
         }
+
+
+        //📝 TODO: [Quando voglio mandare messaggi dal server ho una lista non indicizzata di clients]
 
         /// <summary>
         /// Starts the TCP server and begins accepting clients asynchronously.
