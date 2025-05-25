@@ -1,7 +1,7 @@
 // Auto-generated from commands.yaml
 namespace Neo.Quantower.Toolkit.Socket
 {
-    public static class Command
+    public static class Socket_Commands
     {
         public const string ShareDataStructure = "ShareDataStructure";
         public const string Predict = "Predict";

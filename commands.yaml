@@ -1,0 +1,5 @@
+ShareDataStructure: "Invia struttura dati"
+Predict: "Richiede predizione ML"
+Ack: "Conferma ricezione"
+Ping: "Controllo connessione"
+TrainModel: "Avvia training"
